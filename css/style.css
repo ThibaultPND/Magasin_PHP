@@ -1,0 +1,219 @@
+/* Style de base */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Arial";
+}
+
+nav {
+    background-color: #234019;
+    color: white;
+    text-align: center;
+    padding: 5px;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline-block;
+    padding: 5px 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+}
+
+
+/* Style pour la brre de navigation */
+.navbar {
+    width: 80%;
+    background-color: #237019;
+    border: 2px solid #234019;
+    border-radius: 8px;
+    margin: 0 auto;
+}
+
+.navbar li {
+    border-right: 1px solid gray;
+}
+
+.navbar li:last-child {
+    border-right: none;
+}
+
+.navbar a:hover {
+    color: lightgreen;
+}
+
+.navbar li:hover {
+    transform: translate(0, 5px);
+}
+
+/* Style pour les conteneurs */
+.container {
+    padding: 20px;
+}
+
+/* Style pour le contenu des onglets */
+.tab-content {
+    background-color: #ecf0f1;
+    padding: 20px;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Style pour le pied de page */
+footer {
+    background-color: #237019;
+    /* Bleu */
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Style pour les boutons */
+button {
+    background-color: #237019;
+    /* Bleu */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #234019;
+    /* Bleu plus foncé au survol */
+}
+
+/* Style pour les messages d'erreur */
+#errorDiv {
+    background-color: #ffcccc;
+    /* Couleur de fond rouge clair */
+    color: #cc0000;
+    /* Couleur du texte rouge foncé */
+    padding: 10px;
+    /* Espacement intérieur */
+    margin-bottom: 10px;
+    /* Marge en bas pour l'espacement avec d'autres éléments */
+    border: 1px solid #cc0000;
+    /* Bordure rouge foncé */
+    border-radius: 5px;
+    /* Coins arrondis */
+}
+
+/* Style pour les liens rouges */
+.red-link {
+    color: #cc0000;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Style pour les boutons bleus */
+.blue_button {
+    color: #fff;
+    background-color: #3498db;
+    border: 1px solid #3498db;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.blue_button:hover {
+    background-color: #2980b9;
+}
+
+/* Style pour les boutons rouges */
+.red_button {
+    color: #fff;
+    background-color: #bc2222;
+    border: 1px solid #570a0a;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.red_button:hover {
+    background-color: rgb(232, 110, 110);
+}
+
+/* Style spécifique pour le cadre de connexion */
+.login-container {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+
+.login-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 60%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-container button:hover {
+    background-color: #45a049;
+}
+
+.user-info-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.user-info {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.user-info strong {
+    color: #0066cc;
+    /* Couleur bleue pour le nom d'utilisateur */
+}
