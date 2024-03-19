@@ -27,6 +27,8 @@ class UserModel {
             if ($password == $row["mot_de_passe"]) {
                 session_start();
                 $_SESSION["user_id"] = $row["id"];
+                
+                $_SESSION["nom_utilisateur"] = $row["nom_utilisateur"];
 
                 // Connecté
                 header("Location: index.php");
