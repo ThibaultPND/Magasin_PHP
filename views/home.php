@@ -12,8 +12,9 @@ if (isset($_SESSION['login_error'])) {
 if (!isset($_SESSION["user_id"])) : ?>
     <div class="tab-content">
         <h2>Connexion</h2>
-        
-        <?php if (isset($error)) echo $error; unset($error) ?>
+
+        <?php if (isset($error)) echo $error;
+        unset($error) ?>
 
         <form action="process.php?process=login" method="POST">
             <div class="input-group">
@@ -32,7 +33,7 @@ if (!isset($_SESSION["user_id"])) : ?>
         <div class="user-info">
             <p>Vous êtes connecté en tant que <strong><?php echo $_SESSION["nom_utilisateur"]; ?></strong>.</p>
             <p>Votre QR Code :</p>
-            <!-- Affichera dans le futur un QRCode ici -->
+            <img src="assets/QRcodeLoader.php" />
             <p>Ce QR Code vous permet de vous authentifier auprès d'un hôte de caisse. Un justificatif de votre identité peut vous être demandé.</p>
         </div>
     </div>

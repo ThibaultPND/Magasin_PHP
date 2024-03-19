@@ -50,10 +50,9 @@ class AuthController
 
             $userModel = new UserModel();
 
-            $user_id = $_SESSION['user_id'];
             $new_username = $_POST['new_username'];
             $new_username_confirmation = $_POST['new_username_confirmation'];
-            $userModel->changeUsername($user_id, $new_username, $new_username_confirmation, $_POST['password']);
+            $userModel->changeUsername($new_username, $new_username_confirmation, $_POST['password']);
 
             if (isset($_SESSION["bad_confirmation"])) {
                 unset($_SESSION["bad_confirmation"]);
@@ -91,10 +90,9 @@ class AuthController
 
             $userModel = new UserModel();
 
-            $user_id = $_SESSION['user_id'];
             $new_password = $_POST['new_password'];
             $new_password_confirmation = $_POST['new_password_confirmation'];
-            $userModel->changePassword($user_id, $_POST['password'], $new_password, $new_password_confirmation);
+            $userModel->changePassword($_POST['password'], $new_password, $new_password_confirmation);
 
             if (isset($_SESSION["change_error"])) {
                 header('Location: index.php?page=change_password');

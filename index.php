@@ -33,5 +33,6 @@ switch ($page) {
         $usersManager->showUsersManagerl();
         break;
     default:
+        $homeController->CreateQRCode();
         $homeController->showHome();
 }

@@ -127,17 +127,17 @@ button:hover {
 }
 
 /* Style pour les boutons bleus */
-.blue_button {
+.green_button {
     color: #fff;
-    background-color: #3498db;
-    border: 1px solid #3498db;
+    background-color: #237019;
+    border: 1px solid #237019;
     padding: 8px 16px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.blue_button:hover {
-    background-color: #2980b9;
+.green_button:hover {
+    background-color: #239019;
 }
 
 /* Style pour les boutons rouges */
