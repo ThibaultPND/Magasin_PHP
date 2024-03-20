@@ -14,9 +14,6 @@ $usersManager = new UsersManagerController();
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
 switch ($page) {
-    case 'process_login':
-        $authController->login();
-        break;
     case 'profile':
         $profileController->showProfil();
         break;
@@ -26,13 +23,9 @@ switch ($page) {
     case 'change_password':
         $authController->showChangePassword();
         break;
-    case 'change_password_process':
-        $authController->updatePassword();
-        break;
     case 'users_manager':
         $usersManager->showUsersManagerl();
         break;
     default:
-        $homeController->CreateQRCode();
         $homeController->showHome();
 }

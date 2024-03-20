@@ -13,6 +13,9 @@ switch ($process) {
     case 'login':
         $authController->login();
         break;
+    case 'register':
+        $authController->register();
+        break;
     case 'change_password':
         $authController->updatePassword();
         break;

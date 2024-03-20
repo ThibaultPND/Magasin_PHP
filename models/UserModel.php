@@ -1,5 +1,11 @@
 <?php
-
+class Roles
+{
+    const HOTE_DE_CAISSE = 'hote_de_caisse';
+    const CLIENT = 'client';
+    const RESPONSABLE = 'responsable';
+    const MAGASINIER = 'magasinier';
+}
 class UserModel
 {
     private function db_connexion()
@@ -13,9 +19,10 @@ class UserModel
         return $conn;
     }
 
-    public function executeQuery($query, $params = array())
+    public function executeQuery($query, $params = array(), $conn = null)
     {
-        $conn = $this->db_connexion();
+        if ($conn == null)
+            $conn = $this->db_connexion();
 
         $stmt = $conn->prepare($query);
 
@@ -28,7 +35,6 @@ class UserModel
         $result = $stmt->get_result();
 
         $stmt->close();
-        $conn->close();
 
         return $result;
     }
@@ -40,17 +46,14 @@ class UserModel
     }
     public function authenticate($username, $password)
     {
-        $conn = $this->db_connexion();
-
         // Utilisez des déclarations préparées pour éviter les injections SQL
         $query = "SELECT * FROM utilisateurs WHERE nom_utilisateur = ?";
         $row = $this->getRowByQuery($query, array($username));
-
-        if (sizeof($row) > 0) {
+        if (!empty($row)) {
             // Utilisez password_verify pour vérifier le mot de passe haché
             if ($password == $row["mot_de_passe"]) {
                 session_start();
-                $_SESSION["user_id"] = $row["id"];
+                $_SESSION["id"] = $row["id"];
                 $_SESSION["nom_utilisateur"] = $row["nom_utilisateur"];
                 $_SESSION["email"] = $row["email"];
                 $_SESSION["role"] = $row["role"];
@@ -60,8 +63,20 @@ class UserModel
                 exit();
             }
         }
+    }
 
-        // Fermez la connexion à la base de données
+    public function createAccount($username, $password, $email, $role)
+    {
+        $conn = $this->db_connexion();
+
+        $query = "INSERT INTO `utilisateurs` (`nom_utilisateur`, `mot_de_passe`, `email`, `role`, `qrcode_image`) VALUES (?,?,?,?,?);";
+        $qr_code = $this->CreateQRCode($username);
+
+        $req = $this->executeQuery($query, array($username, $password, $email, $role, $qr_code), $conn);
+        if ($req !== false) {
+            $_SESSION["register_error"] = "Erreur lors de l'ajout de l'enregistrement : " . $conn->error;
+        }
+
         $conn->close();
     }
 
@@ -102,5 +117,24 @@ class UserModel
                 $_SESSION["change_error"] = "Le  mot de passe actuel est invalide";
             }
         }
+    }
+
+
+    public function CreateQRCode($content)
+    {
+        ob_start();
+        QRcode::png($content, null, QR_ECLEVEL_L, 10);
+        $qrCodeImage = ob_get_contents();
+        ob_end_clean();
+
+        return $qrCodeImage;
+    }
+
+    public function showQrCodeImage()
+    {
+        $conn = $this->db_connexion();
+        $query = "SELECT qrcode_image FROM utilisateurs WHERE id = ?";
+        $row = $this->getRowByQuery($query, array($_SESSION["id"]));
+        echo '<img style="height:250px;" src="data:image/png;base64,' . base64_encode($row['qrcode_image']) . '"/>';
     }
 }

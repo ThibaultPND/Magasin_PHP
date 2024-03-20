@@ -1,0 +1,56 @@
+@import url(style.css);
+
+.home_container, .home_connected_container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.home_connected_container {
+    text-align: center;
+    background-color: #ecf0f1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.login_form,
+.register_form {
+    background-color: #ecf0f1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    width: 30%;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.separator {
+    width: 2px;
+    background-color: #ccc;
+    margin: 0 20px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="submit"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}

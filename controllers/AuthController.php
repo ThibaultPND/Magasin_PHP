@@ -7,6 +7,7 @@ class AuthController
     public function showLogin()
     {
         $pageTitle = 'Formulaire de connexion';
+        $style = "css/home.css";
         ob_start();
         include 'views/home.php';
         $content = ob_get_clean();
@@ -15,23 +16,34 @@ class AuthController
 
     public function login()
     {
-        // Vérifie si le formulaire a été soumis
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Récupère les données du formulaire
+
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            // Vérifie les informations d'identification
             $userModel = new UserModel();
             $userModel->authenticate($username, $password);
 
-            // Authentificate devrait rediriger lui même vers la page d'acceuil si l'utilisateur est connecté.
             $_SESSION['login_error'] = 'Nom d\'utilisateur ou mot de passe incorrect';
             $this->showLogin();
         } else {
-            // Redirige vers la page de connexion si le formulaire n'a pas été soumis
-            header("Location: index.php");
-            exit();
+            $this->showLogin();
+        }
+    }
+
+    public function register()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $email = $_POST['email'];
+
+            $userModel = new UserModel();
+            $userModel->createAccount($username, $password, $email, Roles::CLIENT);
+            
+            $this->showLogin();
+        } else {
+            $this->showLogin();
         }
     }
 
@@ -46,7 +58,7 @@ class AuthController
 
     public function updateUsername()
     {
-        if (isset($_SESSION['user_id'])) {
+        if (isset($_SESSION['id'])) {
 
             $userModel = new UserModel();
 
@@ -86,7 +98,7 @@ class AuthController
 
     function updatePassword()
     {
-        if (isset($_SESSION['user_id'])) {
+        if (isset($_SESSION['id'])) {
 
             $userModel = new UserModel();
 
