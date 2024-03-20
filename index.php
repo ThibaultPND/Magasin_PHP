@@ -18,10 +18,10 @@ switch ($page) {
         $profileController->showProfil();
         break;
     case 'change_username':
-        $authController->showChangeUsername();
+        $profileController->showChangeUsername();
         break;
     case 'change_password':
-        $authController->showChangePassword();
+        $profileController->showChangePassword();
         break;
     case 'users_manager':
         $usersManager->showUsersManagerl();

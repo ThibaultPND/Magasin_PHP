@@ -17,7 +17,7 @@ $new_username_confirmation = isset($_GET['new_username_confirmation']) ? $_GET['
     }
     ?>
 
-    <form id="changeUsernameForm" action="index.php?page=change_username_process" method="post">
+    <form id="changeUsernameForm" action="process.php?process=change_username" method="POST">
         <label for="new_username">Nouveau nom d'utilisateur :</label>
         <input type="text" name="new_username" value="<?php echo htmlspecialchars($new_username); ?>" required>
         <br>

@@ -17,7 +17,15 @@
             <?php
             // Vérifiez si l'utilisateur est connecté
             if (isset($_SESSION['id'])) {
-                echo '<li><a href="index.php?page=users_manager">Gestion d\'utilisateur</a></li>';
+                switch ($_SESSION["role"]) {
+                    case Roles::RESPONSABLE:
+                        echo '<li><a href="index.php?page=users_manager">Gestion d\'utilisateur</a></li>';
+                    case Roles::MAGASINIER:
+                    case Roles::HOTE_DE_CAISSE:
+                    case Roles::CLIENT:
+                        break;
+                }
+                // Pages accessible à tous.
                 echo '<li><a href="index.php?page=profile">Profil</a></li>';
             }
             ?>

@@ -1,7 +1,7 @@
 <div class="tab-content">
     <h2>Changer le mot de passe</h2>
     
-    <form action="index.php?page=profile" method="post">
+    <form action="index.php?page=profile" method="POST">
         <button type="submit" class="red_button">Retour</button>
     </form>
 
@@ -12,7 +12,7 @@
     }
     ?>
 
-    <form id="changePasswordForm" action="index.php?page=change_password_process" method="post">
+    <form id="changePasswordForm" action="process.php?process=change_password" method="POST">
         <label for="password">Mot de passe actuel :</label>
             <input type="password" name="password"  required>
         <br>

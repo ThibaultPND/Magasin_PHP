@@ -1,4 +1,5 @@
 <?php
+
 class Roles
 {
     const HOTE_DE_CAISSE = 'hote_de_caisse';
@@ -19,10 +20,9 @@ class UserModel
         return $conn;
     }
 
-    public function executeQuery($query, $params = array(), $conn = null)
+    public function executeQuery($query, $params = array())
     {
-        if ($conn == null)
-            $conn = $this->db_connexion();
+        $conn = $this->db_connexion();
 
         $stmt = $conn->prepare($query);
 
@@ -34,8 +34,10 @@ class UserModel
         $stmt->execute();
         $result = $stmt->get_result();
 
-        $stmt->close();
+        // TODO Verifier si il n'y a pas d'erreurs dans la requête. Si oui la retourné.
 
+        $stmt->close();
+        $conn->close();
         return $result;
     }
 
@@ -57,7 +59,6 @@ class UserModel
                 $_SESSION["nom_utilisateur"] = $row["nom_utilisateur"];
                 $_SESSION["email"] = $row["email"];
                 $_SESSION["role"] = $row["role"];
-
                 // Connecté
                 header("Location: index.php");
                 exit();
@@ -65,39 +66,46 @@ class UserModel
         }
     }
 
+    public function is_connected()
+    {
+        if (isset($_SESSION["id"])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public function createAccount($username, $password, $email, $role)
     {
-        $conn = $this->db_connexion();
+        $query = "INSERT INTO `utilisateurs` (`nom_utilisateur`, `mot_de_passe`, `email`, `role`) VALUES (?,?,?,?);";
 
-        $query = "INSERT INTO `utilisateurs` (`nom_utilisateur`, `mot_de_passe`, `email`, `role`, `qrcode_image`) VALUES (?,?,?,?,?);";
-        $qr_code = $this->CreateQRCode($username);
-
-        $req = $this->executeQuery($query, array($username, $password, $email, $role, $qr_code), $conn);
+        $req = $this->executeQuery($query, array($username, $password, $email, $role));
         if ($req !== false) {
-            $_SESSION["register_error"] = "Erreur lors de l'ajout de l'enregistrement : " . $conn->error;
+            $_SESSION["register_error"] = "Erreur lors de l'ajout de l'enregistrement.";
+            unset($_SESSION["register_error"]);
         }
-
-        $conn->close();
     }
 
     public function changeUsername($new_username, $new_username_confirmation, $password)
     {
         if ($new_username != $new_username_confirmation) {
-            $_SESSION["bad_confirmation"] = true;
-            return;
+            return "Les noms ne sont pas identiques";
         }
 
         $query = "SELECT mot_de_passe FROM utilisateurs WHERE id = ?";
         $row =  $this->getRowByQuery($query, array($_SESSION["id"]));
 
-        if (sizeof($row) > 0) {
+        if (!empty($row)) {
             if ($password == $row["mot_de_passe"]) {
                 $query = "UPDATE utilisateurs SET nom_utilisateur = ? WHERE id = ?";
-                $this->executeQuery($query, array($new_username, $_SESSION["id"]));
+                $result = $this->executeQuery($query, array($new_username, $_SESSION["id"]));
+                if ($result === true) {
+                    return "Erreur lors de la mise à jour du nom d'utilisateur";
+                }
             } else {
-                $_SESSION["wrong_password"] = true;
+                return "Le mot de passe fournis est incorect";
             }
         }
+        return 0;
     }
 
     function changePassword($password, $new_password, $new_password_confirmation)
@@ -120,21 +128,36 @@ class UserModel
     }
 
 
-    public function CreateQRCode($content)
+    public function reloadQrCodeData()
     {
-        ob_start();
-        QRcode::png($content, null, QR_ECLEVEL_L, 10);
-        $qrCodeImage = ob_get_contents();
-        ob_end_clean();
+        if (!isset($_SESSION["id"]))
+            return 1;
 
-        return $qrCodeImage;
+        $query = "SELECT EXISTS(SELECT 1 FROM utilisateurs WHERE qrcode_data = ?);";
+        do {
+            $qr_code = uniqid(mt_rand(), true);
+            $qrcode_exist = $this->executeQuery($query, array($qr_code));
+        } while (!$qrcode_exist);
+
+        $query = "UPDATE utilisateurs SET qrcode_data = ? WHERE id = ?";
+        return $this->executeQuery($query, array($qr_code, $_SESSION["id"]));
     }
 
     public function showQrCodeImage()
     {
-        $conn = $this->db_connexion();
-        $query = "SELECT qrcode_image FROM utilisateurs WHERE id = ?";
+        if (!isset($_SESSION["id"]))
+            return 1;
+
+        $this->reloadQrCodeData();
+        $query = "SELECT qrcode_data FROM utilisateurs WHERE id = ?";
         $row = $this->getRowByQuery($query, array($_SESSION["id"]));
-        echo '<img style="height:250px;" src="data:image/png;base64,' . base64_encode($row['qrcode_image']) . '"/>';
+
+        ob_start();
+        QRcode::png($row["qrcode_data"], null, QR_ECLEVEL_L, 10);
+        $qrCodeImage = ob_get_contents();
+        ob_end_clean();
+
+        echo '<img style="height:250px;" src="data:image/png;base64,' . base64_encode($qrCodeImage) . '"/>';
+        return 0;
     }
 }
